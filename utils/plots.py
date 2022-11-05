@@ -567,9 +567,12 @@ def save_one_box(xyxy, im, file=Path('im.jpg'), gain=1.02, pad=10, square=False,
     xyxy = xywh2xyxy(b).long()
     clip_boxes(xyxy, im.shape)
     crop = im[int(xyxy[0, 1]):int(xyxy[0, 3]), int(xyxy[0, 0]):int(xyxy[0, 2]), ::(1 if BGR else -1)]
+    
+    crop = Image.fromarray(cv2.cvtColor(crop, cv2.COLOR_BGR2RGB))
+    if abs(int(xyxy[0, 2]) - int(xyxy[0, 0])) < abs(int(xyxy[0, 3]) - int(xyxy[0, 1])):
+        crop=crop.rotate(90, expand=True)
     if save:
         file.parent.mkdir(parents=True, exist_ok=True)  # make directory
         f = str(increment_path(file).with_suffix('.jpg'))
-        # cv2.imwrite(f, crop)  # save BGR, https://github.com/ultralytics/yolov5/issues/7007 chroma subsampling issue
-        Image.fromarray(crop[..., ::-1]).save(f, quality=95, subsampling=0)  # save RGB
+        crop.save(f, quality=90, subsampling=0)
     return crop

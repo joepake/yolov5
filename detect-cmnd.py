@@ -138,8 +138,8 @@ def run(
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
                     
                     # print(names[c])
-                    if names[c] == 'v3-id':
-                        print(f"{names[c]}: {ocr_model.predict(save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True, save=False))}")
+                    # if names[c] == 'v3-id':
+                    #     print(f"{names[c]}: {ocr_model.predict(save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True, save=False))}")
 
             # Save results (image with detections)
             if save_img and dataset.mode == 'image':

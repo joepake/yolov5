@@ -607,8 +607,8 @@ def save_one_box_and_gen_label(xyxy, im, file=Path('im.jpg'), gain=1.02, pad=10,
         crop=crop.rotate(90, expand=True)
         isRotated = True
     if save:
-        ROOT = "/Users/vfcit/Data/Projects/cvision/ID/yolov5"
-        SAVED_ROOT = "/Users/vfcit/Data/Projects/cvision/ID/yolov5/cropped"
+        # ROOT = "/Users/vfcit/Data/Projects/cvision/ID/yolov5"
+        # SAVED_ROOT = "/Users/vfcit/Data/Projects/cvision/ID/yolov5/cropped"
         file.parent.mkdir(parents=True, exist_ok=True)  # make directory
         f = str(increment_path(file).with_suffix('.jpg'))
         crop.save(f, quality=90, subsampling=0)
@@ -626,10 +626,10 @@ def save_one_box_and_gen_label(xyxy, im, file=Path('im.jpg'), gain=1.02, pad=10,
         # print('xyxy 2 = ', xmin, ymin, xmax, ymax)
         
         # gen label
-        if isRotated:
-            generateLabel(SAVED_ROOT, f.split('/')[1], f"{ROOT}/{f}", f"{height}", f"{width}", label,
-                    f"{ymin}", f"{xmin}", f"{ymax}", f"{xmax}")
-        else:
-            generateLabel(SAVED_ROOT, f.split('/')[1], f"{ROOT}/{f}", f"{width}", f"{height}", label,
-                    f"{xmin}", f"{ymin}", f"{xmax}", f"{ymax}")
+        # if isRotated:
+        #     generateLabel(SAVED_ROOT, f.split('/')[1], f"{ROOT}/{f}", f"{height}", f"{width}", label,
+        #             f"{ymin}", f"{xmin}", f"{ymax}", f"{xmax}")
+        # else:
+        #     generateLabel(SAVED_ROOT, f.split('/')[1], f"{ROOT}/{f}", f"{width}", f"{height}", label,
+        #             f"{xmin}", f"{ymin}", f"{xmax}", f"{ymax}")
     return crop

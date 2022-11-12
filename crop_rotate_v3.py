@@ -123,6 +123,7 @@ def run(
                 for *xyxy, conf, cls in reversed(det):
                     c = int(cls)  # integer class
                     label = None if hide_labels else (names[c] if hide_conf else f'{names[c]}')
+                    percent = conf
                     
                     if 'front' in label or 'back' in label:
                         save_one_box_and_gen_label(xyxy, imc, file=save_dir / f'{p.stem}.jpg', BGR=True, label=label)

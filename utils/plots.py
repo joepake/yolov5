@@ -633,3 +633,45 @@ def save_one_box_and_gen_label(xyxy, im, file=Path('im.jpg'), gain=1.02, pad=10,
         #     generateLabel(SAVED_ROOT, f.split('/')[1], f"{ROOT}/{f}", f"{width}", f"{height}", label,
         #             f"{xmin}", f"{ymin}", f"{xmax}", f"{ymax}")
     return crop
+
+def crop_card(xyxy, im, file, gain=1.02, pad=10, square=False, BGR=False, save=True, label=""):
+    # Save image crop as {file} with crop size multiple {gain} and {pad} pixels. Save and/or return crop
+    xyxy = torch.tensor(xyxy).view(-1, 4)
+    b = xyxy2xywh(xyxy)  # boxes
+    if square:
+        b[:, 2:] = b[:, 2:].max(1)[0].unsqueeze(1)  # attempt rectangle to square
+    b[:, 2:] = b[:, 2:] * gain + pad  # box wh * gain + pad
+    xyxy = xywh2xyxy(b).long()
+    clip_boxes(xyxy, im.shape)
+    crop = im[int(xyxy[0, 1]):int(xyxy[0, 3]), int(xyxy[0, 0]):int(xyxy[0, 2]), ::(1 if BGR else -1)]
+    
+    width = abs(int(xyxy[0, 2]) - int(xyxy[0, 0]))
+    height = abs(int(xyxy[0, 3]) - int(xyxy[0, 1]))
+    xmin = xyxy[0, 0].item()
+    ymin = xyxy[0, 1].item()
+    xmax = xyxy[0, 2].item()
+    ymax = xyxy[0, 3].item()
+    deltaX = xmin
+    deltaY = ymin
+    xmin -= deltaX
+    xmax -= deltaX
+    ymin -= deltaY
+    ymax -= deltaY
+    
+    crop = Image.fromarray(cv2.cvtColor(crop, cv2.COLOR_BGR2RGB))
+    if width < height:
+        crop=crop.rotate(90, expand=True)
+    if save:
+        # f = str(increment_path(file).with_suffix('.jpg'))
+        # crop.save(f, quality=90, subsampling=0)
+        
+        crop.save(file, quality=90, subsampling=0)
+        
+        # gen label
+        # if isRotated:
+        #     generateLabel(SAVED_ROOT, f.split('/')[1], f"{ROOT}/{f}", f"{height}", f"{width}", label,
+        #             f"{ymin}", f"{xmin}", f"{ymax}", f"{xmax}")
+        # else:
+        #     generateLabel(SAVED_ROOT, f.split('/')[1], f"{ROOT}/{f}", f"{width}", f"{height}", label,
+        #             f"{xmin}", f"{ymin}", f"{xmax}", f"{ymax}")
+    return crop

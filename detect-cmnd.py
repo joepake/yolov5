@@ -5,7 +5,7 @@ from pathlib import Path
 
 import torch
 
-from utils.ocr_common import OCRCommon
+# from utils.ocr_common import OCRCommon
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -72,8 +72,8 @@ def run(
     dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt)
     bs = 1  # batch_size
     
-    #OCR
-    ocr_model = OCRCommon()
+    # #OCR
+    # ocr_model = OCRCommon()
 
     # Run inference
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup

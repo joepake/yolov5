@@ -3,6 +3,7 @@ import os
 import platform
 import sys
 from pathlib import Path
+import shutil
 
 import torch
 
@@ -16,7 +17,7 @@ from models.common import DetectMultiBackend
 from utils.dataloaders import IMG_FORMATS, VID_FORMATS, LoadImages, LoadScreenshots, LoadStreams
 from utils.general import (LOGGER, Profile, check_file, check_img_size, check_imshow, check_requirements, colorstr, cv2,
                            increment_path, non_max_suppression, print_args, scale_boxes, strip_optimizer, xyxy2xywh)
-from utils.plots import Annotator, colors, save_one_box_and_gen_label
+from utils.plots import Annotator, colors, save_one_box_and_gen_label, crop_card
 from utils.torch_utils import select_device, smart_inference_mode
 
 @smart_inference_mode()
@@ -118,19 +119,22 @@ def run(
                 for c in det[:, 5].unique():
                     n = (det[:, 5] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-
+                
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     c = int(cls)  # integer class
                     label = None if hide_labels else (names[c] if hide_conf else f'{names[c]}')
-                    percent = conf
                     
                     if 'front' in label or 'back' in label:
-                        save_one_box_and_gen_label(xyxy, imc, file=save_dir / f'{p.stem}.jpg', BGR=True, label=label)
-                        count += 1
-                        if count % 10 == 0:
-                            print('processed: ', count)
+                        if conf.item() < 0.8:
+                            # move to error folder
+                            shutil.move(path, "/Users/vfcit/Data/Projects/cvision/ID/NationalID/data/ID_27102022_1/error")
+                        else:
+                            # save_one_box_and_gen_label(xyxy, imc, file=save_dir / f'{p.stem}.jpg', BGR=True, label=label)
+                            crop_card(xyxy, imc, file=Path(f'/Users/vfcit/Data/Projects/cvision/ID/NationalID/data/ID_27102022_1/detect/{label}/{os.path.basename(path)}'), BGR=True, label=label)
+                            os.remove(path)
                         break
+                
 
         # Print time (inference-only)
         LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")

@@ -1,6 +1,6 @@
-train: ../yolov5/data/data/images/train/
-val: ../yolov5/data/data/images/val/
+train: /Users/nguyentruongthuc/Projects/LTN/cv-xsangiang/data/images/train/
+val: /Users/nguyentruongthuc/Projects/LTN/cv-xsangiang/data/images/val/
 
 # Classes
-nc:  54 # number of classes
-names: ['v1-top-left','v1-top-right','v1-bottom-left','v1-bottom-right','v1-front','v1-back','v1-avatar','v1-id','v1-name','v1-birth','v1-origin','v1-address','v1-national','v1-religion','v1-specs','v1-date','v1-issued','v2-top-left','v2-top-right','v2-bottom-left','v2-bottom-right','v2-front','v2-back','v2-avatar','v2-id','v2-name','v2-birth','v2-origin','v2-address','v2-gender','v2-national','v2-expired','v2-specs','v2-date','v2-issued','v3-top-left','v3-top-right','v3-bottom-left','v3-bottom-right','v3-front','v3-back','v3-avatar','v3-id','v3-name','v3-birth','v3-origin','v3-address','v3-gender','v3-national','v3-expired','v3-specs','v3-date','v3-issued','v3-code']  # class names
+nc:  5 # number of classes
+names: ['no1','no2','no3','date','key']  # class names

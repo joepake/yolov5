@@ -521,6 +521,7 @@ def main(opt, callbacks=Callbacks()):
         torch.cuda.set_device(LOCAL_RANK)
         device = torch.device('cuda', LOCAL_RANK)
         dist.init_process_group(backend="nccl" if dist.is_nccl_available() else "gloo")
+        # dist.init_process_group(backend='nccl', init_method='env://', timeout=datetime.timedelta(seconds=5400))
 
     # Train
     if not opt.evolve:
